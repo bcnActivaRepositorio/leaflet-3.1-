@@ -34,7 +34,6 @@ function onMapLoad() {
 		render_to_map(allTypes, "all");
 		// get rid of repeated types of food
 		dataFood = cleanArr(dataFood);
-		// dataFood = dataFood.filter((foodType, position) => dataFood.indexOf(foodType) == position );
 		// 2) Añado de forma dinámica en el select los posibles tipos de restaurantes
 		for(let f in dataFood){
 			  $('#kind_food_selector').append($('<option>', {value: f, text: dataFood[f]}));
@@ -85,6 +84,7 @@ function render_to_map(data,filter){
 		// get rid of repeated types of food
 		dataFood = cleanArr(dataFood);
 		match = (dataFood[index]);
+		console.log(dataFood);
 		// if I click on select "Todos"
 		if(match == "Todos"){
 		// make the makers again
