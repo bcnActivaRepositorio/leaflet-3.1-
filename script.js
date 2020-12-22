@@ -18,28 +18,25 @@ var popUp  = new L.Popup();
 //  general
 let allTypes;
 let types;
+let findMe;
 
 
 function onMapLoad() {
-	console.log("Mapa cargado");
-	let ownUrl = "http://localhost/mapa/api/apiRestaurants.php";
-	console.log(ownUrl);
 	
+	let ownUrl = "http://localhost/mapa/api/apiRestaurants.php";
 	// get the data 
 	// 1) Relleno el data_markers con una petición a la api
 	$.getJSON(ownUrl, function(data){
 		// we get the whole object
-		console.log(data);
 		allTypes = data;
 		// send it ro render
 		render_to_map(allTypes, "all");
 		// get rid of repeated types of food
 		dataFood = dataFood.filter((foodType, position) => dataFood.indexOf(foodType) == position );
-		console.log(dataFood);
 		// 2) Añado de forma dinámica en el select los posibles tipos de restaurantes
 		for(let f in dataFood){
 			  $('#kind_food_selector').append($('<option>', {value: f, text: dataFood[f]}));
-			   console.log(dataFood[f]);
+	
 		  }
 
 	});
@@ -54,7 +51,6 @@ function onMapLoad() {
 }
 
 $('#kind_food_selector').on('change', function() {
-  console.log(this.value);
 
   render_to_map(dataFood, this.value);
 });
@@ -62,12 +58,9 @@ $('#kind_food_selector').on('change', function() {
 
 
 function render_to_map(data,filter){
-	console.log('render works');
-	// let addAll;
 	if (filter == "all" ){
 		// add todos
 		dataFood.unshift("Todos");
-		//addAll = $('#kind_food_selector').append($('<option>', {value: dataFood.length + 1 ,text: "Todos"}));		
 		// iterate through each 
 		// wouldn't be better a for in?
 		$.each(data, function(index){
@@ -81,10 +74,8 @@ function render_to_map(data,filter){
 			// unnest the array 
 			dataFood = dataFood.flat();
 			// all of data has gone here
-			// console.log(dataFood);
 		});
 	} else {
-		console.log('clear works');
 		markers.clearLayers();
 		data_markers = [];
 		let type = "";
@@ -92,6 +83,8 @@ function render_to_map(data,filter){
 		let match = "";
 		let match2 = [];
 		index = parseInt(filter);
+		// get rid of repeated types of food
+		dataFood = dataFood.filter((foodType, position) => dataFood.indexOf(foodType) == position );
 		match = (dataFood[index]);
 		// if I click on select "Todos"
 		if(match == "Todos"){
@@ -104,10 +97,8 @@ function render_to_map(data,filter){
 			// safe Keeping in an array to iterate again
 			match2 = unit.kind_food.split(',');
 			// search array for each word | type of food
-			for (type of match2){
-				// if they match make markers of ONLY the matches
-				(type == match) ? makeMarkers(unit) : console.log('not match');
-			}
+			findMe = match2.find((e) => e == match);
+			(findMe !== undefined) ? makeMarkers(unit) : console.log('not match');
 		}
 	}
 	}
@@ -121,13 +112,12 @@ function render_to_map(data,filter){
 }
 /**********************************************AUXILIAR FUNCTIONS*************************************************/
 function makeMarkers(data){
+			data_markers = [];
 	marker = new L.Marker(new L.LatLng(data.lat, data.lng));
 			// fill the arr for delete and add
 			data_markers.push(marker);
 			let info = (`${data.name} <br/> ${data.address}<br/> <strong>Tipo de cocina</strong>:<br/> ${data.kind_food}`);
 			popUp = new L.Popup({maxHeigth: 175, maxWidth: 400}).setContent(info);
-			console.log(marker);
-			console.log(data_markers);
 			markers.addLayer(marker.bindPopup(popUp));
 			markers.addTo(map);
 }
@@ -141,4 +131,5 @@ function makeMarkers(data){
 // https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
 
 // clean markers before making new ones
+// https://stackoverflow.com/questions/28636723/how-to-clear-leaflet-map-of-all-markers-and-layers-before-adding-new-ones
 // https://github.com/Leaflet/Leaflet/issues/3238
