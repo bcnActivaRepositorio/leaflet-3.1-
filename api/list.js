@@ -1,4 +1,4 @@
-  [
+  let restaurants = [
     {
     "id_restaurant": "1",
     "name": "La Placeta",
