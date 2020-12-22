@@ -58,6 +58,8 @@ $('#kind_food_selector').on('change', function() {
 
 function render_to_map(data,filter){
 	if (filter == "all" ){
+		// clean the arr just in case
+		dataFood = cleanArr(dataFood);
 		// add todos
 		dataFood.unshift("Todos");
 		// iterate through each 
@@ -76,7 +78,6 @@ function render_to_map(data,filter){
 	} else {
 		markers.clearLayers();
 		data_markers = [];
-		let type = "";
 		let index = 0;
 		let match = "";
 		let match2 = [];
