@@ -29,6 +29,7 @@ function onMapLoad() {
 	$.getJSON(ownUrl, function(data){
 		// we get the whole object
 		allTypes = data;
+		console.log(allTypes);
 		// send it ro render
 		render_to_map(allTypes, "all");
 		// get rid of repeated types of food
@@ -38,7 +39,7 @@ function onMapLoad() {
 			  $('#kind_food_selector').append($('<option>', {value: f, text: dataFood[f]}));
 	
 		  }
-
+		  
 	});
 	
     /*
@@ -47,7 +48,6 @@ function onMapLoad() {
 		2) Añado de forma dinámica en el select los posibles tipos de restaurantes
 		3) Llamo a la función para --> render_to_map(data_markers, 'all'); <-- para mostrar restaurantes en el mapa
 	*/
-	
 }
 
 $('#kind_food_selector').on('change', function() {
@@ -64,7 +64,6 @@ function render_to_map(data,filter){
 		// iterate through each 
 		// wouldn't be better a for in?
 		$.each(data, function(index){
-			console.log(data[index].kind_food);
 			// print them all
 			makeMarkers(data[index]);
 			// kind_food into var, string type
@@ -86,6 +85,7 @@ function render_to_map(data,filter){
 		// get rid of repeated types of food
 		dataFood = dataFood.filter((foodType, position) => dataFood.indexOf(foodType) == position );
 		match = (dataFood[index]);
+		console.log(dataFood);
 		// if I click on select "Todos"
 		if(match == "Todos"){
 		// make the makers again
@@ -98,7 +98,10 @@ function render_to_map(data,filter){
 			match2 = unit.kind_food.split(',');
 			// search array for each word | type of food
 			findMe = match2.find((e) => e == match);
-			(findMe !== undefined) ? makeMarkers(unit) : console.log('not match');
+			if(findMe !== undefined) {
+				makeMarkers(unit);
+				console.log(unit);
+			} 
 		}
 	}
 	}
