@@ -75,35 +75,6 @@ function render_to_map(data,filter){
 			dataFood = dataFood.flat();
 			// all of data has gone here
 		});
-	} else {
-		markers.clearLayers();
-		data_markers = [];
-		let index = 0;
-		let match = "";
-		let match2 = [];
-		index = parseInt(filter);
-		// get rid of repeated types of food
-		dataFood = cleanArr(dataFood);
-		match = (dataFood[index]);
-		console.log(dataFood);
-		// if I click on select "Todos"
-		if(match == "Todos"){
-		// make the makers again
-			render_to_map(allTypes, "all");
-
-		} else{
-		// even with a million restaurants I MUST iterate through all of them
-		for (let unit of allTypes){
-			// safe Keeping in an array to iterate again
-			match2 = unit.kind_food.split(',');
-			// search array for each word | type of food
-			findMe = match2.find((e) => e == match);
-			if(findMe !== undefined) {
-				makeMarkers(unit);
-				console.log(unit);
-			} 
-		}
-	}
 	}
 	
 	/*
