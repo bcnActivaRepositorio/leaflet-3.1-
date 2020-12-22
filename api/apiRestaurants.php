@@ -2,7 +2,7 @@
 /*
 Trataremos los datos deacuerdo con la especificación 
 */
-
+header('Access-Control-Allow-Origin: http://localhost/mapa/api/apiRestaurants.php');
 include("_db.php");
 // call to database
 $db = ("mysql:host=localhost;dbname=restaurants");
