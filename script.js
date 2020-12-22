@@ -33,15 +33,15 @@ function onMapLoad() {
 		// send it ro render
 		render_to_map(allTypes, "all");
 		// get rid of repeated types of food
-		dataFood = dataFood.filter((foodType, position) => dataFood.indexOf(foodType) == position );
+		dataFood = cleanArr(dataFood);
+		// dataFood = dataFood.filter((foodType, position) => dataFood.indexOf(foodType) == position );
 		// 2) Añado de forma dinámica en el select los posibles tipos de restaurantes
 		for(let f in dataFood){
 			  $('#kind_food_selector').append($('<option>', {value: f, text: dataFood[f]}));
 	
 		  }
 		  
-	});
-	
+	});	
     /*
 	FASE 3.1
 		1) Relleno el data_markers con una petición a la api
@@ -83,9 +83,8 @@ function render_to_map(data,filter){
 		let match2 = [];
 		index = parseInt(filter);
 		// get rid of repeated types of food
-		dataFood = dataFood.filter((foodType, position) => dataFood.indexOf(foodType) == position );
+		dataFood = cleanArr(dataFood);
 		match = (dataFood[index]);
-		console.log(dataFood);
 		// if I click on select "Todos"
 		if(match == "Todos"){
 		// make the makers again
@@ -124,6 +123,8 @@ function makeMarkers(data){
 			markers.addLayer(marker.bindPopup(popUp));
 			markers.addTo(map);
 }
+
+const cleanArr = (arr) => arr.filter((foodType, position) => arr.indexOf(foodType) == position );
 /*****************************************************************************************************************/
 // RESEARCH 
 
