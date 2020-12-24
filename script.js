@@ -22,9 +22,9 @@ let findMe;
 
 
 function onMapLoad() {
-	
-	let ownUrl = "http://localhost/mapa/api/apiRestaurants.php";
 	// get the data 
+	// let ownUrl = "http://localhost/mapa/api/apiRestaurants.php";
+	let ownUrl = "http://localhost:3000/bares"
 	// 1) Relleno el data_markers con una petición a la api
 	$.getJSON(ownUrl, function(data){
 		// we get the whole object
@@ -75,6 +75,39 @@ function render_to_map(data,filter){
 			dataFood = dataFood.flat();
 			// all of data has gone here
 		});
+	} else {
+		markers.clearLayers();
+		data_markers = [];
+		let index = 0;
+		let match = "";
+		let match2 = [];
+		index = parseInt(filter);
+		// get rid of repeated types of food
+		dataFood = cleanArr(dataFood);
+		match = (dataFood[index]);
+		console.log(dataFood);
+		// if I click on select "Todos"
+		if(match == "Todos"){
+		// make the makers again
+			render_to_map(allTypes, "all");
+
+		} else{
+		// even with a million restaurants I MUST iterate through all of them
+		for (let unit of allTypes){
+			// safe Keeping in an array to iterate again
+			match2 = unit.kind_food.split(',');
+			// search array for each word | type of food
+			/* for (type of match2){
+				// if they match make markers of ONLY the matches
+				(type == match) ? makeMarkers(unit) : console.log('not match');
+			} */
+			findMe = match2.find((e) => e == match);
+			if(findMe !== undefined) {
+				makeMarkers(unit);
+				console.log(unit);
+			} 
+		}
+	}
 	}
 	
 	/*
@@ -106,6 +139,9 @@ const cleanArr = (arr) => arr.filter((foodType, position) => arr.indexOf(foodTyp
 // Remove repeated items
 // https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
 
-// clean markers before making new ones
+// Clean markers before making new ones
 // https://stackoverflow.com/questions/28636723/how-to-clear-leaflet-map-of-all-markers-and-layers-before-adding-new-ones
 // https://github.com/Leaflet/Leaflet/issues/3238
+
+// CORS
+// https://stackoverflow.com/questions/31276220/cors-header-access-control-allow-origin-missing

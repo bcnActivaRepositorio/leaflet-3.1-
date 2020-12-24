@@ -1,4 +1,5 @@
-  [
+  {
+    "bares":[
     {
     "id_restaurant": "1",
     "name": "La Placeta",
@@ -104,3 +105,4 @@
     "kind_food": "Mediterraneo,Mexicano,Vegetariano,Italiano,Casero,Internacional"
     }
     ]
+  }
